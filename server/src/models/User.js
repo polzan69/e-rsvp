@@ -51,6 +51,12 @@ const userSchema = new mongoose.Schema({
 
 userSchema.index({ email: 1, eventId: 1 }, { unique: true });
 
+// Method to compare passwords
+userSchema.methods.comparePassword = async function (enteredPassword) {
+  const bcrypt = require('bcryptjs');
+  return await bcrypt.compare(enteredPassword, this.password);
+};
+
 /*
 userSchema.pre('save', function (next) {
   this.email = this.email.toLowerCase();
