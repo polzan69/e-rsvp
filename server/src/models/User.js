@@ -45,6 +45,25 @@ const userSchema = new mongoose.Schema({
     ref: 'Event',
   },
 
+  // Admin-only fields (clients with paid plans)
+  paymentStatus: {
+    type: String,
+    enum: ['pending', 'paid', 'failed'],
+    default: 'pending',
+    required: function () {
+      return this.role === 'admin'; // Only for admin clients
+    },
+  },
+
+  serviceType: {
+    type: String,
+    enum: ['standard', 'premium', 'deluxe'],
+    default: 'standard',
+    required: function () {
+      return this.role === 'admin'; // Only for admin clients
+    },
+  },
+
 }, {
   timestamps: { createdAt: true, updatedAt: true }
 });
